@@ -7,18 +7,6 @@ output:
   pdf_document: default
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-# Apresentar Markdown para os participantes
-* o básico
-  1. apresentar o Markdown
-  1.1.(Nos Apresentar)
-  1.2(Apresentar o projeto do curso)
-  1.3()
-  
-
 ## Vamos iniciar
 
 ### Esse documento está sendo escrito em **R-Markdown**
@@ -26,20 +14,11 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Segue abaixo as variáveis que estão no conjunto de dados.
 
 ```{r Turma_estudantes}
+library(readxl)
+Turma_estudantes <- read_excel("Turma_estudantes.xlsx")
+
 str(Turma_estudantes)
-```
-### Podemos usar uma biblioteca muito específica:
 
-```{r}
-library(skimr)
-skim(Turma_estudantes)
-```
-
-### O tamanho do Conjunto de Dados?
-uma opção é usar o método dim(nome do conjunto de dados)
-
-```{r}
-dim(Turma_estudantes)
 ```
 #### O que são essas informações de saída do nosso código? obs. vou repetir [1] para informar as saídas.
 * [1] 20 total de **linhas** do conjunto de dados, são as observações, objeto dos cursos de estatística
@@ -49,9 +28,6 @@ dim(Turma_estudantes)
 
 OBS. Imaginem, você sendo responsável por informar coisas sobre a turma a partir desse conjunto de dados **Turma_estudantes** será que é possível informar algo ou prof. dessa turma que seja relevante para que o resultados dos alunos que estão no nível básico e intermediário avancem para o nível avançado? Acho que primeiro é necessário conhecer um pouco desses dados, não acham?
 
----
-#### Obs. para abrir uma célula de código, use o atalho **ctrl+alt+i**
----
 
 # ESTATÍSTICAS DESCRITIVAS UNIVARIADAS:
 
@@ -89,6 +65,10 @@ barplot(table(Turma_estudantes$Ingles))
 
 
 ##### 1.3 Como exercício façam o mesmo caminho para variável **Sexo**, serão duas saídas gráficas: relativa (código proportions) e  absoluta (table). Quais resultados teremos?
+
+---
+#### Obs. para abrir uma célula de código, use o atalho **ctrl+alt+i**
+---
 
 ---
 
@@ -277,7 +257,25 @@ ggplot(Turma_estudantes, aes(Ingles, Idade, fill = Ingles)) +
 * $H_1$:  os dados **não** seguem é uma distribuição normal, p-value < 0.05
 
 ```{r}
-bartlett.test(Turma_estudantes$Idade~Turma_estudantes$Ingles) 
+library(nortest)
+#Testes
+t1 <- ks.test(Turma_estudantes$Idade, "pnorm", mean(Turma_estudantes$Idade), sd(Turma_estudantes$Idade)) # KS
+t2 <- lillie.test(Turma_estudantes$Idade) # Lilliefors
+t3 <- cvm.test(Turma_estudantes$Idade) # Cramér-von Mises
+t4 <- shapiro.test(Turma_estudantes$Idade) # Shapiro-Wilk
+t5 <- sf.test(Turma_estudantes$Idade) # Shapiro-Francia
+t6 <- ad.test(Turma_estudantes$Idade) # Anderson-Darling
+# Tabela de resultados
+testes <- c(t1$method, t2$method, t3$method, t4$method, t5$method,
+ t6$method)
+estt <- as.numeric(c(t1$statistic, t2$statistic, t3$statistic,
+ t4$statistic, t5$statistic, t6$statistic))
+valorp <- c(t1$p.value, t2$p.value, t3$p.value, t4$p.value, t5$p.value,
+ t6$p.value)
+resultados <- cbind(estt, valorp)
+rownames(resultados) <- testes
+colnames(resultados) <- c("Estatística", "p")
+print(resultados, digits = 4)
 ```
 ### Conclusão: Nesse caso não vamos rejeitar H0, já que p-value > 0.05, indicando normalidade entre os grupos.
 
@@ -295,3 +293,18 @@ anova_Idade_Ingles
 
 se não normal:
 teste de kruskal wallis (kruskal.test())
+
+```{r}
+kruskal.test(Idade~Ingles, data = Turma_estudantes)
+```
+##### Conclusão o teste não rejeita $H_0$, já que p > 0.05.
+
+
+### Tabela 
+
+```{r}
+#library(gtsummary)
+library(tidyr)
+#tbl_summary(Turma_estudantes,by=Sexo)
+```
+
