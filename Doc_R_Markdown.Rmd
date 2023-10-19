@@ -1,0 +1,297 @@
+---
+title: "Minicurso_sia"
+author: "Lino, Leonardo, Letícia e o orientador Alexandre"
+date: "2023-10-08"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Apresentar Markdown para os participantes
+* o básico
+  1. apresentar o Markdown
+  1.1.(Nos Apresentar)
+  1.2(Apresentar o projeto do curso)
+  1.3()
+  
+
+## Vamos iniciar
+
+### Esse documento está sendo escrito em **R-Markdown**
+
+### Segue abaixo as variáveis que estão no conjunto de dados.
+
+```{r Turma_estudantes}
+str(Turma_estudantes)
+```
+### Podemos usar uma biblioteca muito específica:
+
+```{r}
+library(skimr)
+skim(Turma_estudantes)
+```
+
+### O tamanho do Conjunto de Dados?
+uma opção é usar o método dim(nome do conjunto de dados)
+
+```{r}
+dim(Turma_estudantes)
+```
+#### O que são essas informações de saída do nosso código? obs. vou repetir [1] para informar as saídas.
+* [1] 20 total de **linhas** do conjunto de dados, são as observações, objeto dos cursos de estatística
+* [1] 8 total de **colunas** do conjunto de dados, são as variáveis ou atributos, objeto dos cursos de estatística.  
+
+---
+
+OBS. Imaginem, você sendo responsável por informar coisas sobre a turma a partir desse conjunto de dados **Turma_estudantes** será que é possível informar algo ou prof. dessa turma que seja relevante para que o resultados dos alunos que estão no nível básico e intermediário avancem para o nível avançado? Acho que primeiro é necessário conhecer um pouco desses dados, não acham?
+
+---
+#### Obs. para abrir uma célula de código, use o atalho **ctrl+alt+i**
+---
+
+# ESTATÍSTICAS DESCRITIVAS UNIVARIADAS:
+
+---
+
+## vamos conhecer algumas opções de código para ESTATÍSTICA DESCRITIVA - de variáveis QUALITATIVAS
+
+1. A segunda será o Inglês, categorias a variável inglês tem, quantas pessoas tem em cada uma e qual o percentual de pessoas que tem em cada, resumindo:
+  * categorias na variável inglês;
+  * totais de pessoas nas categorias;
+  * percentuais totais nas categorias.
+
+#### 1.1.1 Vamos observar a tabela de contingência da frequência absoluta, o data.frame(table())
+
+```{r}
+data.frame(table(Turma_estudantes$Ingles))
+```
+#### 1.1.2 Vamos observar a tabela de contingência da frequência absoluta, o data.frame(proportions(table())*100)
+
+```{r}
+data.frame(proportions(table(Turma_estudantes$Ingles))*100)
+```
+
+
+#### 1.2 vamos observar os gráficos de barra a partir da proporção, que é comummente chamado frequência relativa, o barplot(proportions(table()))
+
+```{r}
+barplot(proportions(table(Turma_estudantes$Ingles))*100)
+```
+#### 1.3 vamos observar os gráficos de barra só da contagem, que é comummente chamado frequência absoluta, o barplot(table()).
+
+```{r}
+barplot(table(Turma_estudantes$Ingles))
+```
+
+
+##### 1.3 Como exercício façam o mesmo caminho para variável **Sexo**, serão duas saídas gráficas: relativa (código proportions) e  absoluta (table). Quais resultados teremos?
+
+---
+
+##### 1.4 Façam como exercício a variável Bairro, em quais bairros os estudantes moram, quantos moram em cada bairro, resumindo:
+  * Total de bairros e estudantes por bairro
+  * percentual de estudantes por bairro.
+
+---
+
+## vamos conhecer algumas opções de código para ESTATÍSTICA DESCRITIVA - de variáveis QUANTITATIVAS 
+
+Qual o resumo das idades dos estudantes:
+obs. Com o código summary(nome_do_conjunto_de_dados$coluna_[precisar ser de dados quantitativos])
+
+obs2. a saída:
+Min : o menor valor do vetor
+1st Qu: é o quartil de 25% do conjunto. objeto dos cursos de estatística
+Median: é a mediana do conjunto, objeto dos cursos de estatística
+3rd Qu: é o quartil de 75% do conjunto, objeto dos cursos de estatística
+Max: o maior valor do vetor
+```{r}
+summary(Turma_estudantes$Idade)
+```
+
+Vamos informar separadamente as informações da Idade como média, variância e desvio padrão
+
+```{r}
+mean(Turma_estudantes$Idade)
+var(Turma_estudantes$Idade)
+sd(Turma_estudantes$Idade)
+```
+
+Qual a distribuição visual, pelo **histograma**, das idades dos estudantes dessa turma? 
+
+```{r}
+hist(Turma_estudantes$Idade)
+```
+
+
+---
+
+# ESTATÍSTICAS DESCRITIVAS BIVARIADAS:
+
+## variáveis Qualitativas vs Qualitativas:
+
+##### Resumo: Em análise bidimensional, em variáveis qualitativas, os dados são resumidos em --tabelas de duplas entrada--, onde as saídas das tabelas de contingência ou os gráficos são as frequências absolutas ou relativas que pertencem as categorias de uma e da outra variável. Um dos principais objetivos é conhecer o grau de dependência entre elas, de modo que possamos prever melhor o resultado de uma delas a partir da realização da outra.
+
+#### Obs. As estatísticas descritivas Bivariadas buscam entender a existência de associação entre duas variáveis, como a --mudança-- de opinião de certo comportamento de uma variável na presença ou não de informação sobre a segunda variável.
+
+* Relacionar duas variáveis qualitativas ou categóricas, as relações que mais comumente são estudadas são:
+  a. Frequências absolutas:
+    * por linha, que é em relação ao total de linhas.
+    * por coluna, que é em relação ao total de colunas.
+  b. Frequências Relativas (%):
+    * por linha, que é em relação ao total de linhas.
+    * por coluna, que é em relação ao total de colunas.
+---
+
+1. Serão as variáveis: Sexo vs Ingles, as saídas serão: **(a)** e **(b)**
+
+```{r}
+# no absoluto como pode ser visto os totais linha e colunas estão informados
+tabela_sexo_ingles <- table(Turma_estudantes$Sexo, Turma_estudantes$Ingles)
+tabela_sexo_ingles
+```
+
+a. Nessa tabela temos as mesmas saídas que na tabela anterior mas as proporções totais são as linhas, no código se escolhe pelo atributo **margin**, que para linha é **1**.
+
+```{r}
+# por linha
+round(proportions(table(Turma_estudantes$Sexo, Turma_estudantes$Ingles), margin = 1)*100,2)
+```
+
+b. Nessa tabela temos as mesmas saídas da tabela de frequência absoluta mas as proporções totais são as colunas, no código se escolhe pelo atributo **margin**, que para linha é **2**.
+
+```{r}
+# por coluna
+round(proportions(table(Turma_estudantes$Sexo,Turma_estudantes$Ingles), margin = 2)*100,2)
+```
+
+* Saídas gráficas:
+
+```{r}
+library(ggplot2)
+ggplot(data = Turma_estudantes) + geom_count(mapping = aes(x=Ingles, y=Sexo))
+```
+
+* Como explico???
+
+```{r}
+library(ggplot2)
+ggplot(Turma_estudantes, aes(Ingles)) + geom_bar(aes(fill=Sexo)) + ylab('totais por Gênero') + labs(
+  title = 'Gráfico que relaciona Nível de Inglês por Gênero'
+)
+```
+
+### Vamos Verificar a associação dessas variáveis, Sexo e Ingles? Realizando o Teste Exato de Fisher
+
+##### obs. o teste a ser escolhido será o teste exato de fisher, é o mais indicado para grupos menores que 50 observações, para conjuntos maiores indicamos o teste qui quadrado 
+
+* Quais hipóteses?
+  1. $H_0$: independência. Se p > 0.05 não rejeita H0
+  2. $H_1$: dependência. Se p < 0.05 rejeita H0.
+
+```{r}
+fisher <- fisher.test(tabela_sexo_ingles)
+fisher
+```
+
+#### Conclusão H0 não é rejeitado, já que p-value > 0.05. Isso quer dizer que p > 0.05, então informa que o nível de inglês é independente do gênero, em outras palavras não tem associação entre gênero e nível de inglês.
+
+---
+
+## Variáveis Quantitativas vs Quantitativas:
+
+##### Resumo: Em análise bidimensional, em variáveis quantitativas, os dados são resumidos em --mensurações e técnicas como gráficos de dispersão ou quantis apropriados--, podemos ter o casos de variáveis quantitativas agrupadas em classes, desse modo, se tem também tabelas de dupla entrada. Mas sempre o objetivo central é encontrar as possíveis relações e/ou associações entre as duas variáveis.
+
+#### Obs. As estatísticas descritivas Bivariadas buscam entender a existência de associação entre duas variáveis, como a --mudança-- de opinião de certo comportamento de uma variável na presença ou não de informação sobre a segunda variável.
+
+#### Para essa parte vamos trabalhar com um sub quadro de dados com as variáveis  peso e altura, que são variáveis do quadro original
+
+```{r}
+turma_alt_pes <- data.frame(Altura = Turma_estudantes$Altura, Peso = Turma_estudantes$Peso)
+```
+
+
+* Relacionar duas variáveis Quantitativas, será através de gráficos de **Dispersão**
+  
+```{r}
+library(ggplot2)
+ggplot(turma_alt_pes, aes(Altura, Peso)) + geom_point() + geom_smooth(method = lm)
+```
+
+#### Verificando a normalidade de cada um dos dois grupos (Peso e Altura) de forma UNIVARIADA, através do teste de Shapiro-Wilk pelo resultado do p-value, assim se:
+* $H_0$:  os dados seguem uma distribuição normal, p-value > 0.05
+* $H_1$:  os dados **não** seguem é uma distribuição normal, p-value < 0.05
+
+```{r}
+shapiro.test(turma_alt_pes$Altura)
+```
+##### Conclusão pelo resultado do p-value (p > 0.05) não se rejeita H0, e Altura é uma distribuição normal segundo o teste de Shapiro-Wilk.
+
+```{r}
+shapiro.test(turma_alt_pes$Peso)
+```
+##### Conclusão pelo resultado do p-value (p > 0.05) não se rejeita H0, e Peso é uma distribuição normal segundo o teste de Shapiro-Wilk.
+
+#### Vamos Verificar a associação dessas variáveis, Altura e Peso ? Realizando o Teste 
+* Quais hipóteses?
+  1. $H_0$: Altura e Peso possuem correlação, se o p-value > 0,05, é indicação da não rejeição dessa aqui, chamada de hipótese nula.
+  2. $H_1$: Altura e Peso - **Não** possuem correlação, se o p-value < 0,05, o teste indica rejeitar $H_0$.
+ 
+ ### obs. caso o teste de normalidade seja rejeitado, será necessário realizar de correlação de Spearman (teste não paramétrico)
+
+```{r}
+teste_pearson <- cor.test(turma_alt_pes$Altura, turma_alt_pes$Peso, method = "pearson")
+teste_pearson
+```
+
+### Conclusão: p-value tem p < 0.05, isso indica que devemos rejeitar H0, agora vamos interpretar a correlação (cor), logo a correlação é positiva e pelo valor cor = 0.69, indica correlação moderada (|0.3|<= cor<= |0.7|).
+
+
+### Variáveis Qualitativas (quali) vs Quantitativas (quanti):
+
+#### Importante: É necessário avaliar se essas variáveis possuem essas caracteristicas.
+  a. normalidade - pelo teste de shaspiro
+  b. homogeneidade de variâncias (em outras palavras: igualdade de variâncias) - pelo teste de Bartlett.
+  
+* Tendo atendido essas caracteristicas, seus resultados podem ser avaliados com tranquilidade.
+
+##### Resumo: Em análises bivariadas de variáveis quali x quanti, cabe analisar o que acontece c/ a variável, quantitativa dentro de cada variável qualitativa. Para esse tipo de análise é conviniente contar c/ uma medida que quantifique o grau de dependência entre as variáveis (1)
+
+boxplot(idade~ingles, data - turma_estudantes) 
+ tapply (idade, ingles, summary) describe para cada grupo.
+normalidade
+
+```{r}
+ggplot(Turma_estudantes, aes(Ingles, Idade, fill = Ingles)) + 
+  geom_boxplot(alpha = 0.4) + 
+  stat_summary(fun = 'mean', geom = 'point', shape = 23, size = 3, fill = 'green')
+```
+#### Nessa saída, os pontos da cor verde são as médias dos valores de Idade dentro de cada grupo, e os grupos são os níveis de Ingles, e como podemos observar todas estão dentro das caixas (boxplot), e as medianas são as linhas em preto que dividem as caixas
+
+#### O próximo é verificar se a variavel idade tem distrbuição normal, pelo teste de shapiro.
+* $H_0$:  os dados seguem uma distribuição normal, p-value > 0.05
+* $H_1$:  os dados **não** seguem é uma distribuição normal, p-value < 0.05
+
+```{r}
+bartlett.test(Turma_estudantes$Idade~Turma_estudantes$Ingles) 
+```
+### Conclusão: Nesse caso não vamos rejeitar H0, já que p-value > 0.05, indicando normalidade entre os grupos.
+
+
+##### Agora vamos começar os testes:
+
+1. teste - análise de variância (anova - aov()),
+##### obs. a variável quantitativa é a primeira e a qualitativa em segundo
+
+```{r}
+anova_Idade_Ingles <- aov(Idade~Ingles, Turma_estudantes)
+anova_Idade_Ingles
+```
+
+
+se não normal:
+teste de kruskal wallis (kruskal.test())
