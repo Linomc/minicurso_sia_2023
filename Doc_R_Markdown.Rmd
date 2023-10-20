@@ -1,7 +1,7 @@
 ---
 title: "Minicurso_sia"
-author: "Lino, Leonardo, Letícia e o orientador Alexandre"
-date: "2023-10-08"
+author: "Lino Carvalho"
+date: "2023-10-18"
 output:
   html_document: default
   pdf_document: default
@@ -116,7 +116,7 @@ hist(Turma_estudantes$Idade)
 
 ##### Resumo: Em análise bidimensional, em variáveis qualitativas, os dados são resumidos em --tabelas de duplas entrada--, onde as saídas das tabelas de contingência ou os gráficos são as frequências absolutas ou relativas que pertencem as categorias de uma e da outra variável. Um dos principais objetivos é conhecer o grau de dependência entre elas, de modo que possamos prever melhor o resultado de uma delas a partir da realização da outra.
 
-#### Obs. As estatísticas descritivas Bivariadas buscam entender a existência de associação entre duas variáveis, como a --mudança-- de opinião de certo comportamento de uma variável na presença ou não de informação sobre a segunda variável.
+#### Obs. As estatísticas descritivas Bivariadas buscam entender a existência de associação entre duas variáveis, como a mudança de opinião de certo comportamento de uma variável na presença ou não de informação sobre a segunda variável.
 
 * Relacionar duas variáveis qualitativas ou categóricas, as relações que mais comumente são estudadas são:
   a. Frequências absolutas:
@@ -165,9 +165,22 @@ ggplot(Turma_estudantes, aes(Ingles)) + geom_bar(aes(fill=Sexo)) + ylab('totais 
 )
 ```
 
-### Vamos Verificar a associação dessas variáveis, Sexo e Ingles? Realizando o Teste Exato de Fisher
+# Vamos Verificar por meio de testes de Hipótese se essas variáveis possuem associação.
 
-##### obs. o teste a ser escolhido será o teste exato de fisher, é o mais indicado para grupos menores que 50 observações, para conjuntos maiores indicamos o teste qui quadrado 
+### Qual teste escolher?
+
+1. o Teste Exato de Fisher
+2. o Teste Qui Quadrado
+
+##### obs. o teste a ser escolhido será o teste exato de fisher, é o mais indicado para grupos menores que 50 observações, mas não é suficiente, o obs2 informará o que falta. 
+
+##### obs2, outra forma de avaliar se a melhor opção é o teste exato de Fisher e verificar se o resultado das células da tabela de contingência é <5 (tem um cálculo específico, mas é um calculo simples), para conjuntos maiores indicamos o teste qui quadrado 
+
+```{r}
+c11<-sum(tabela_sexo_ingles[,1])*sum(tabela_sexo_ingles[1,])/sum(tabela_sexo_ingles)
+ 
+```
+##### Como a primeira linha informa um resultado < 5 . Já pode ser definido que o melhor teste a ser realizado é o teste exato de Fisher
 
 * Quais hipóteses?
   1. $H_0$: independência. Se p > 0.05 não rejeita H0
@@ -298,13 +311,4 @@ teste de kruskal wallis (kruskal.test())
 kruskal.test(Idade~Ingles, data = Turma_estudantes)
 ```
 ##### Conclusão o teste não rejeita $H_0$, já que p > 0.05.
-
-
-### Tabela 
-
-```{r}
-#library(gtsummary)
-library(tidyr)
-#tbl_summary(Turma_estudantes,by=Sexo)
-```
 
