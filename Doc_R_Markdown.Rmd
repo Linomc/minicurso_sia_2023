@@ -1,5 +1,5 @@
 ---
-title: "Minicurso_sia"
+title: "Minicurso_sia_2023_Unirio"
 author: "Lino Carvalho"
 date: "2023-10-18"
 output:
@@ -20,14 +20,9 @@ Turma_estudantes <- read_excel("Turma_estudantes.xlsx")
 str(Turma_estudantes)
 
 ```
-#### O que são essas informações de saída do nosso código? obs. vou repetir [1] para informar as saídas.
-* [1] 20 total de **linhas** do conjunto de dados, são as observações, objeto dos cursos de estatística
-* [1] 8 total de **colunas** do conjunto de dados, são as variáveis ou atributos, objeto dos cursos de estatística.  
+
 
 ---
-
-OBS. Imaginem, você sendo responsável por informar coisas sobre a turma a partir desse conjunto de dados **Turma_estudantes** será que é possível informar algo ou prof. dessa turma que seja relevante para que o resultados dos alunos que estão no nível básico e intermediário avancem para o nível avançado? Acho que primeiro é necessário conhecer um pouco desses dados, não acham?
-
 
 # ESTATÍSTICAS DESCRITIVAS UNIVARIADAS:
 
@@ -304,7 +299,8 @@ anova_Idade_Ingles
 ```
 
 
-se não normal:
+seguindo o teste de shapiro, p-value = 0.003119, logo p < 0.05, então é não normal, então o teste mais indicado é o de Kruskal Wallis:
+
 teste de kruskal wallis (kruskal.test())
 
 ```{r}
@@ -312,3 +308,5 @@ kruskal.test(Idade~Ingles, data = Turma_estudantes)
 ```
 ##### Conclusão o teste não rejeita $H_0$, já que p > 0.05.
 
+# Muito OBRIGADO!
+---
